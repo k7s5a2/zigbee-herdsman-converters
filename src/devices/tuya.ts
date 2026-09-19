@@ -21462,192 +21462,283 @@ export const definitions: DefinitionWithExtend[] = [
         },
     },
     {
-        fingerprint: [{modelID: "TS0601", manufacturerName: "_TZE284_6ocnqlhn"}],
-        model: "TO-Q-SYS-JZT",
-        vendor: "Tongou",
-        description: "Din rail smart meter",
-        extend: [
-            tuya.modernExtend.tuyaBase({
-                dp: true,
-                queryOnConfigure: true,
-                queryIntervalSeconds: 10,
-            }),
-        ],
-        exposes: [
-            tuya.exposes.switch(),
-            e.power(),
-            e.current(),
-            e.voltage(),
-            e.energy(),
-            e.ac_frequency(),
-            e.power_factor().withUnit("%"),
-            e.numeric("temperature", ea.STATE).withUnit("°C").withDescription("Current temperature"),
-            e
-                .enum("event", ea.STATE, [
-                    "normal",
-                    "over_current_trip",
-                    "over_power_trip",
-                    "high_temp_trip",
-                    "over_voltage_trip",
-                    "under_voltage_trip",
-                    "over_current_alarm",
-                    "over_power_alarm",
-                    "high_temp_alarm",
-                    "over_voltage_alarm",
-                    "under_voltage_alarm",
-                    "remote_on",
-                    "remote_off",
-                    "manual_on",
-                    "manual_off",
-                    "leakage_trip",
-                    "leakage_alarm",
-                    "restore_default",
-                    "automatic_closing",
-                    "electricity_shortage",
-                    "electricity_shortage_alarm",
-                    "timing_switch_On",
-                    "timing_switch_off",
-                ])
-                .withDescription("Last event of the device"),
-            e.enum("control_mode", ea.STATE_SET, ["local_lock", "local_mode", "remote_mode", "full_control"]).withDescription("Device control mode"),
-            e.enum("over_current_setting", ea.STATE_SET, ["Ignore", "Alarm", "Trip"]).withDescription("Over current setting"),
-            e
-                .numeric("over_current_threshold", ea.STATE_SET)
-                .withUnit("A")
-                .withDescription("Setup the value on the device")
-                .withValueMin(1)
-                .withValueMax(50),
-            e.enum("over_voltage_setting", ea.STATE_SET, ["Ignore", "Alarm", "Trip"]).withDescription("Over voltage setting"),
-            e
-                .numeric("over_voltage_threshold", ea.STATE_SET)
-                .withUnit("V")
-                .withDescription("Setup value on the device")
-                .withValueMin(240)
-                .withValueMax(295),
-            e.enum("under_voltage_setting", ea.STATE_SET, ["Ignore", "Alarm", "Trip"]).withDescription("Under voltage setting"),
-            e
-                .numeric("under_voltage_threshold", ea.STATE_SET)
-                .withUnit("V")
-                .withDescription("Setup value on the device")
-                .withValueMin(90)
-                .withValueMax(220),
-            e.enum("temperature_setting", ea.STATE_SET, ["Ignore", "Alarm", "Trip"]).withDescription("Temperature setting"),
-            e
-                .numeric("temperature_threshold", ea.STATE_SET)
-                .withUnit("°C")
-                .withDescription("Setup value on the device")
-                .withValueMin(-25)
-                .withValueMax(80),
-            e.enum("over_power_setting", ea.STATE_SET, ["Ignore", "Alarm", "Trip"]).withDescription("Over power setting"),
-            e
-                .numeric("over_power_threshold", ea.STATE_SET)
-                .withUnit("W")
-                .withDescription("Setup value on the device")
-                .withValueMin(1000)
-                .withValueMax(26000),
-            e.numeric("test1", ea.STATE), // ?
-            e.numeric("test5", ea.STATE), // ?
-        ],
-        meta: {
-            tuyaDatapoints: [
-                [1, "energy", tuya.valueConverter.divideBy100],
-                [6, null, tuya.valueConverter.phaseVariant2],
-                [13, "test1", tuya.valueConverter.raw], // ?
-                [15, "leakage_current", tuya.valueConverter.raw],
-                [16, "state", tuya.valueConverter.onOff],
-                [32, "ac_frequency", tuya.valueConverter.raw],
-                [50, "power_factor", tuya.valueConverter.raw],
-                [
-                    102,
-                    "over_voltage_setting",
-                    tuya.valueConverterBasic.lookup({
-                        Ignore: tuya.enum(0),
-                        Alarm: tuya.enum(1),
-                        Trip: tuya.enum(2),
-                    }),
-                ],
-                [
-                    103,
-                    "under_voltage_setting",
-                    tuya.valueConverterBasic.lookup({
-                        Ignore: tuya.enum(0),
-                        Alarm: tuya.enum(1),
-                        Trip: tuya.enum(2),
-                    }),
-                ],
-                [
-                    104,
-                    "over_current_setting",
-                    tuya.valueConverterBasic.lookup({
-                        Ignore: tuya.enum(0),
-                        Alarm: tuya.enum(1),
-                        Trip: tuya.enum(2),
-                    }),
-                ],
-                [
-                    105,
-                    "over_power_setting",
-                    tuya.valueConverterBasic.lookup({
-                        Ignore: tuya.enum(0),
-                        Alarm: tuya.enum(1),
-                        Trip: tuya.enum(2),
-                    }),
-                ],
-                [
-                    107,
-                    "temperature_setting",
-                    tuya.valueConverterBasic.lookup({
-                        Ignore: tuya.enum(0),
-                        Alarm: tuya.enum(1),
-                        Trip: tuya.enum(2),
-                    }),
-                ],
-                [
-                    108,
-                    "control_mode",
-                    tuya.valueConverterBasic.lookup({
-                        local_lock: tuya.enum(0),
-                        local_mode: tuya.enum(1),
-                        remote_mode: tuya.enum(2),
-                        full_control: tuya.enum(3),
-                    }),
-                ],
-                [
-                    110,
-                    "event",
-                    tuya.valueConverterBasic.lookup({
-                        normal: 0,
-                        over_current_trip: 1,
-                        over_power_trip: 2,
-                        high_temp_trip: 3,
-                        over_voltage_trip: 4,
-                        under_voltage_trip: 5,
-                        over_current_alarm: 6,
-                        over_power_alarm: 7,
-                        high_temp_alarm: 8,
-                        over_voltage_alarm: 9,
-                        under_voltage_alarm: 10,
-                        remote_on: 11,
-                        remote_off: 12,
-                        manual_on: 13,
-                        manual_off: 14,
-                        leakage_trip: 15,
-                        leakage_alarm: 16,
-                        restore_default: 17,
-                        automatic_closing: 18,
-                        electricity_shortage: 19,
-                        electricity_shortage_alarm: 20,
-                        timing_switch_on: 21,
-                        timing_switch_off: 22,
-                    }),
-                ],
-                [114, "over_current_threshold", tuya.valueConverter.raw],
-                [115, "over_voltage_threshold", tuya.valueConverter.raw],
-                [116, "under_voltage_threshold", tuya.valueConverter.raw],
-                [118, "temperature_threshold", tuya.valueConverter.divideBy10],
-                [119, "over_power_threshold", tuya.valueConverter.raw],
-                [125, "test5", tuya.valueConverter.raw], // ?
-                [131, "temperature", tuya.valueConverter.divideBy10],
+    fingerprint: [{modelID: 'TS0601', manufacturerName: '_TZE284_6ocnqlhn'}],
+    model: 'TO-Q-SYS-JZT',
+    vendor: 'Tongou',
+    description: 'DIN rail smart meter',
+
+    extend: [
+        tuya.modernExtend.tuyaBase({
+            dp: true,
+            queryOnConfigure: true,
+            queryIntervalSeconds: 10,
+        }),
+    ],
+
+    exposes: [
+        tuya.exposes.switch(),
+
+        e.power(),
+        e.current(),
+        e.voltage(),
+        e.energy(),
+        e.ac_frequency(),
+        e.power_factor().withUnit('%'),
+
+        e.numeric('temperature', ea.STATE)
+            .withUnit('°C')
+            .withDescription('Current temperature'),
+
+        e.enum('event', ea.STATE, [
+            'normal',
+            'over_current_trip',
+            'over_power_trip',
+            'high_temp_trip',
+            'over_voltage_trip',
+            'under_voltage_trip',
+            'over_current_alarm',
+            'over_power_alarm',
+            'high_temp_alarm',
+            'over_voltage_alarm',
+            'under_voltage_alarm',
+            'remote_on',
+            'remote_off',
+            'manual_on',
+            'manual_off',
+            'leakage_trip',
+            'leakage_alarm',
+            'restore_default',
+            'automatic_closing',
+            'electricity_shortage',
+            'electricity_shortage_alarm',
+            'timing_switch_on',
+            'timing_switch_off',
+        ]).withDescription('Last event of the device'),
+
+        e.enum('control_mode', ea.STATE_SET, [
+            'local_lock',
+            'local_mode',
+            'remote_mode',
+            'full_control',
+        ]).withDescription('Device control mode'),
+
+        e.enum('over_current_setting', ea.STATE_SET, [
+            'Ignore',
+            'Alarm',
+            'Trip',
+        ]).withDescription('Over current setting'),
+
+        e.numeric('over_current_threshold', ea.STATE_SET)
+            .withUnit('A')
+            .withDescription('Setup the value on the device')
+            .withValueMin(1)
+            .withValueMax(50),
+
+        e.enum('over_voltage_setting', ea.STATE_SET, [
+            'Ignore',
+            'Alarm',
+            'Trip',
+        ]).withDescription('Over voltage setting'),
+
+        e.numeric('over_voltage_threshold', ea.STATE_SET)
+            .withUnit('V')
+            .withDescription('Setup value on the device')
+            .withValueMin(240)
+            .withValueMax(295),
+
+        e.enum('under_voltage_setting', ea.STATE_SET, [
+            'Ignore',
+            'Alarm',
+            'Trip',
+        ]).withDescription('Under voltage setting'),
+
+        e.numeric('under_voltage_threshold', ea.STATE_SET)
+            .withUnit('V')
+            .withDescription('Setup value on the device')
+            .withValueMin(90)
+            .withValueMax(220),
+
+        e.enum('temperature_setting', ea.STATE_SET, [
+            'Ignore',
+            'Alarm',
+            'Trip',
+        ]).withDescription('Temperature setting'),
+
+        e.numeric('temperature_threshold', ea.STATE_SET)
+            .withUnit('°C')
+            .withDescription('Setup value on the device')
+            .withValueMin(-25)
+            .withValueMax(80),
+
+        e.enum('over_power_setting', ea.STATE_SET, [
+            'Ignore',
+            'Alarm',
+            'Trip',
+        ]).withDescription('Over power setting'),
+
+        e.numeric('over_power_threshold', ea.STATE_SET)
+            .withUnit('W')
+            .withDescription('Setup value on the device')
+            .withValueMin(1000)
+            .withValueMax(26000),
+
+        
+        e.binary('current_recloser', ea.STATE_SET, 'ON', 'OFF')
+            .withDescription('Current recloser'),
+        e.binary('power_recloser', ea.STATE_SET, 'ON', 'OFF')
+            .withDescription('Power recloser'),
+        e.binary('voltage_recloser', ea.STATE_SET, 'ON', 'OFF')
+            .withDescription('Voltage recloser'),
+        
+        e.binary('lcd_backlight_off', ea.STATE_SET, 'ON', 'OFF')
+            .withDescription('LCD Backlight OFF'),
+        
+        e.numeric('lcd_brightness', ea.STATE_SET)
+            .withUnit('%')
+            .withValueMin(0)
+            .withValueMax(100)
+            .withValueStep(20)
+            .withDescription('LCD brightness'),
+            
+        e.enum('lcd_rotation', ea.STATE_SET, [
+            'FWD',
+            'REV',
+        ]).withDescription('LCD Rotation'),
+        
+
+    ],
+
+    meta: {
+        tuyaDatapoints: [
+            [1, 'energy', tuya.valueConverter.divideBy100],
+
+            [6, null, tuya.valueConverter.phaseVariant2],
+
+            [15, 'leakage_current', tuya.valueConverter.raw],
+
+            [16, 'state', tuya.valueConverter.onOff],
+
+            [32, 'ac_frequency', frequencyConverter],
+
+            [50, 'power_factor', tuya.valueConverter.raw],
+
+            [
+                102,
+                'over_voltage_setting',
+                tuya.valueConverterBasic.lookup({
+                    Ignore: tuya.enum(0),
+                    Alarm: tuya.enum(1),
+                    Trip: tuya.enum(2),
+                }),
+            ],
+
+            [
+                103,
+                'under_voltage_setting',
+                tuya.valueConverterBasic.lookup({
+                    Ignore: tuya.enum(0),
+                    Alarm: tuya.enum(1),
+                    Trip: tuya.enum(2),
+                }),
+            ],
+
+            [
+                104,
+                'over_current_setting',
+                tuya.valueConverterBasic.lookup({
+                    Ignore: tuya.enum(0),
+                    Alarm: tuya.enum(1),
+                    Trip: tuya.enum(2),
+                }),
+            ],
+
+            [
+                105,
+                'over_power_setting',
+                tuya.valueConverterBasic.lookup({
+                    Ignore: tuya.enum(0),
+                    Alarm: tuya.enum(1),
+                    Trip: tuya.enum(2),
+                }),
+            ],
+
+            [
+                107,
+                'temperature_setting',
+                tuya.valueConverterBasic.lookup({
+                    Ignore: tuya.enum(0),
+                    Alarm: tuya.enum(1),
+                    Trip: tuya.enum(2),
+                }),
+            ],
+
+            [
+                108,
+                'control_mode',
+                tuya.valueConverterBasic.lookup({
+                    local_lock: tuya.enum(0),
+                    local_mode: tuya.enum(1),
+                    remote_mode: tuya.enum(2),
+                    full_control: tuya.enum(3),
+                }),
+            ],
+
+            [
+                110,
+                'event',
+                tuya.valueConverterBasic.lookup({
+                    normal: 0,
+                    over_current_trip: 1,
+                    over_power_trip: 2,
+                    high_temp_trip: 3,
+                    over_voltage_trip: 4,
+                    under_voltage_trip: 5,
+                    over_current_alarm: 6,
+                    over_power_alarm: 7,
+                    high_temp_alarm: 8,
+                    over_voltage_alarm: 9,
+                    under_voltage_alarm: 10,
+                    remote_on: 11,
+                    remote_off: 12,
+                    manual_on: 13,
+                    manual_off: 14,
+                    leakage_trip: 15,
+                    leakage_alarm: 16,
+                    restore_default: 17,
+                    automatic_closing: 18,
+                    electricity_shortage: 19,
+                    electricity_shortage_alarm: 20,
+                    timing_switch_on: 21,
+                    timing_switch_off: 22,
+                }),
+            ],
+
+            [114, 'over_current_threshold', tuya.valueConverter.raw],
+            [115, 'over_voltage_threshold', tuya.valueConverter.raw],
+            [116, 'under_voltage_threshold', tuya.valueConverter.raw],
+            [118, 'temperature_threshold', tuya.valueConverter.divideBy10],
+            [119, 'over_power_threshold', tuya.valueConverter.raw],
+
+            [131, 'temperature', tuya.valueConverter.divideBy10],
+            
+            [140, 'lcd_brightness', lcdBrightnessConverter],
+            
+            [141, 'lcd_backlight_off', tuya.valueConverter.onOff],
+            
+            
+            [
+                143, 
+                'lcd_rotation',
+                tuya.valueConverterBasic.lookup({
+                    FWD: tuya.enum(0),
+                    RWD: tuya.enum(1),
+                }),
+            ],
+            
+            [144, 'current_recloser', tuya.valueConverter.onOff],
+            [145, 'power_recloser', tuya.valueConverter.onOff],
+            [146, 'voltage_recloser', tuya.valueConverter.onOff],
+            
             ],
         },
     },
